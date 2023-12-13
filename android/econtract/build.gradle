@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('eContract-v3.1.0.aar'))

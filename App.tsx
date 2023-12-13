@@ -1,0 +1,261 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ */
+
+import React, {useEffect, useState} from 'react';
+import type {PropsWithChildren} from 'react';
+import {
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+  Button,
+  Alert,
+  NativeEventEmitter,
+  NativeModules,
+} from 'react-native';
+
+import {
+  Colors,
+  DebugInstructions,
+  Header,
+  LearnMoreLinks,
+  ReloadInstructions,
+} from 'react-native/Libraries/NewAppScreen';
+
+import Dialog from 'react-native-dialog';
+
+const {CalendarModule} = NativeModules;
+
+const onPress = () => {
+  CalendarModule.createCalendarEvent('testName', 'testLocation');
+};
+
+type SectionProps = PropsWithChildren<{
+  title: string;
+}>;
+
+function Section({children, title}: SectionProps): React.JSX.Element {
+  const isDarkMode = useColorScheme() === 'dark';
+  return (
+    <View style={styles.sectionContainer}>
+      <Text
+        style={[
+          styles.sectionTitle,
+          {
+            color: isDarkMode ? Colors.white : Colors.black,
+          },
+        ]}>
+        {title}
+      </Text>
+      <Text
+        style={[
+          styles.sectionDescription,
+          {
+            color: isDarkMode ? Colors.light : Colors.dark,
+          },
+        ]}>
+        {children}
+      </Text>
+    </View>
+  );
+}
+
+function App() {
+  const [text, setText] = useState('');
+  const [code, setCode] = useState('');
+  const [visible, setVisible] = useState(false);
+
+  const isDarkMode = useColorScheme() === 'dark';
+
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
+
+  const moduleCallback = (code, tokenOrStatusCode, certIdOrStatusDesc) => {
+    console.log(code);
+    console.log(tokenOrStatusCode);
+    console.log(certIdOrStatusDesc);
+
+    // let message = `
+    //   ${code === 0 ? 'token' : 'status code'}: ${tokenOrStatusCode}
+    //   ${code === 0 ? 'certId' : 'status desc'}: ${certIdOrStatusDesc}
+    // `;
+
+    // Alert.alert(code == 1 ? 'Error' : 'Success', message, [
+    //   {text: 'OK', onPress: () => console.log('OK Pressed')},
+    // ]);
+
+    setText(certIdOrStatusDesc);
+
+    // Alert.alert('test', tokenOrStatusCode);
+  };
+
+  const onPress2 = function () {
+    setVisible(false);
+    CalendarModule.getAuth(moduleCallback);
+
+    // Alert.alert('test', 'message');
+  };
+
+  const onPress3 = function () {
+    setVisible(false);
+    CalendarModule.getMainInfo();
+
+    // Alert.alert('test', 'message');
+  };
+
+  const onPress4 = function () {
+    setVisible(false);
+    CalendarModule.getWaitingTransaction('alksdfjlsdjfl');
+
+    // Alert.alert('test', 'message');
+  };
+
+  useEffect(() => {
+    const eventEmitter = new NativeEventEmitter(CalendarModule);
+    let eventListener = eventEmitter.addListener('EventReminder', event => {
+      // console.log(event.eventProperty);
+      let code = event.code;
+      let tokenOrStatusCode = event.token;
+      let certIdOrStatusDesc = event.credentialId;
+      // console.log(code);
+      // console.log(tokenOrStatusCode);
+      // console.log(certIdOrStatusDesc);
+
+      let message = `
+    ${code === 0 ? 'token' : 'status code'}: ${tokenOrStatusCode}
+    ${code === 0 ? 'certId' : 'status desc'}: ${certIdOrStatusDesc}
+  `;
+
+      console.log(message);
+
+      setCode(code === 0 ? 'success' : 'error');
+
+      setText(message);
+
+      setVisible(true);
+
+      // Alert.alert(code == 1 ? 'Error' : 'Success', message, [
+      //   {text: 'OK', onPress: () => console.log('OK Pressed')},
+      // ]);
+
+      // Alert.alert('test', tokenOrStatusCode);
+    });
+
+    // Removes the listener once unmounted
+    return () => {
+      eventListener.remove();
+    };
+  }, []);
+
+  const showDialog = () => {
+    setVisible(true);
+  };
+
+  const handleCancel = () => {
+    setVisible(false);
+  };
+
+  // const handleDelete = () => {
+  //   // The user has pressed the "Delete" button, so here you can do your own logic.
+  //   // ...Your logic
+  //   setVisible(false);
+  // };
+
+  return (
+    <SafeAreaView style={backgroundStyle}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={backgroundStyle.backgroundColor}
+      />
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        style={backgroundStyle}>
+        <Header />
+        <Button
+          onPress={onPress}
+          title="Learn More"
+          color="#841584"
+          accessibilityLabel="Learn more about this purple button"
+        />
+        <Button
+          onPress={onPress2}
+          title="Get Auth"
+          color="#841584"
+          accessibilityLabel="Learn more about this purple button"
+        />
+        <Button
+          onPress={onPress3}
+          title="Get Main"
+          color="#841584"
+          accessibilityLabel="Learn more about this purple button"
+        />
+        <Button
+          onPress={onPress4}
+          title="Get Waiting Transaction"
+          color="#841584"
+          accessibilityLabel="Learn more about this purple button"
+        />
+        <View
+          style={{
+            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+          }}>
+          <Section title="Step 1">
+            Edit <Text style={styles.highlight}>""</Text> to change this screen
+            and then come back to see your edits.
+          </Section>
+          <Section title="See Your Changes">
+            <ReloadInstructions />
+          </Section>
+          <Section title="Debug">
+            <DebugInstructions />
+          </Section>
+          <Section title="Learn More">
+            Read the docs to discover what to do next:
+          </Section>
+          <LearnMoreLinks />
+        </View>
+      </ScrollView>
+      <View>
+        <Dialog.Container
+          visible={visible}
+          verticalButtons={true}
+          onRequestClose={handleCancel}>
+          <Dialog.Title>{code}</Dialog.Title>
+          <ScrollView>
+            <Dialog.Description>{text}</Dialog.Description>
+          </ScrollView>
+          <Dialog.Button label="OK" onPress={handleCancel} />
+        </Dialog.Container>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  sectionContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  sectionDescription: {
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: '400',
+  },
+  highlight: {
+    fontWeight: '700',
+  },
+});
+
+export default App;

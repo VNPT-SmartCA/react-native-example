@@ -1,0 +1,71 @@
+buildscript {
+    ext {
+        buildToolsVersion = "33.0.1"
+        minSdkVersion = 21
+        compileSdkVersion = 33
+        targetSdkVersion = 33
+        ndkVersion = "25.1.8937393"
+//        ndkVersion = "21.4.7075529"
+        kotlinVersion = "1.7.0"
+//        storageUrl = System.env.FLUTTER_STORAGE_BASE_URL ?: "https://storage.googleapis.com"
+    }
+
+//    String storageUrl = System.env.FLUTTER_STORAGE_BASE_URL ?: "https://storage.googleapis.com"
+
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+
+        flatDir {
+            dirs 'libs'
+        }
+
+//        maven {
+//            //Đường dẫn thư mục chứa **repo** ở bước 1
+//            url '/Users/vnptsi/Desktop/ReactApp/ReactNativeApp/android/app/libs/repo'
+//        }
+//        // bỏ qua nếu project phát triển bằng Flutter
+//        maven {
+//            url "$storageUrl/download.flutter.io"
+//        }
+
+        maven {
+            url 'https://jitpack.io'
+        }
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle")
+//        classpath("com.android.tools.build:gradle:7.3.1")
+//        classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+    }
+}
+
+//plugins {
+//    id 'com.android.application' version '7.2.1' apply false
+//    id 'com.android.library' version '7.2.1' apply false
+//    id 'org.jetbrains.kotlin.android' version '1.7.0' apply false
+//}
+
+String storageUrl = System.env.FLUTTER_STORAGE_BASE_URL ?: "https://storage.googleapis.com"
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+        maven {
+            //Đường dẫn thư mục chứa **repo** ở bước 1
+            url '/Users/vnptsi/Desktop/ReactApp/ReactNativeApp/android/app/libs/repo'
+        }
+        // bỏ qua nếu project phát triển bằng Flutter
+        maven {
+            url "$storageUrl/download.flutter.io"
+        }
+        maven { url "https://jitpack.io" }
+    }
+}
+
+apply plugin: "com.facebook.react.rootproject"

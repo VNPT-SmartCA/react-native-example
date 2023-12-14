@@ -100,8 +100,12 @@ function App() {
   };
 
   const onPress2 = function () {
+    // CalendarModule.createCalendarEvent('testName', 'testLocation');
+    // CalendarModule.increment();
+    // console.log(CalendarModule);
+
     setVisible(false);
-    CalendarModule.getAuth(moduleCallback);
+    CalendarModule.getAuth();
 
     // Alert.alert('test', 'message');
   };
@@ -152,9 +156,14 @@ function App() {
       // Alert.alert('test', tokenOrStatusCode);
     });
 
+    let testIOSEvent = eventEmitter.addListener('onIncrement', event => {
+      console.log('onIncrement event', event);
+    });
+
     // Removes the listener once unmounted
     return () => {
       eventListener.remove();
+      testIOSEvent.remove();
     };
   }, []);
 

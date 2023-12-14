@@ -80,7 +80,7 @@ class CalendarModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
     }
 
     @ReactMethod()
-    private fun getAuth(callback: Callback) {
+    private fun getAuth() {
         currentActivity?.runOnUiThread {
             try {
                 VNPTSmartCA.getAuthentication { result ->

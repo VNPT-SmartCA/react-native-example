@@ -1,7 +1,7 @@
 package com.reactnativeapp
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import com.facebook.react.bridge.Arguments
@@ -19,6 +19,7 @@ import com.facebook.react.bridge.Callback
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
+import com.vnpt.smartca.EkycService
 
 class CalendarModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
@@ -27,9 +28,9 @@ class CalendarModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
     @ReactMethod(isBlockingSynchronousMethod = true) fun createCalendarEvent(name: String, location: String) {
         Log.d("CalendarModule", "Create event called with name: $name and location: $location")
         Toast.makeText(reactApplicationContext, location, Toast.LENGTH_SHORT).show()
-
+//
 //        currentActivity?.runOnUiThread {
-//            init(currentActivity!!.baseContext)
+//            init(currentActivity!!)
 ////            getAuthentication()
 //        }
 
@@ -139,7 +140,7 @@ class CalendarModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
         }
     }
 
-    @ReactMethod()
+    @ReactMethod(isBlockingSynchronousMethod = true)
     private fun getMainInfo() {
         currentActivity?.runOnUiThread {
             try {
@@ -220,6 +221,16 @@ class CalendarModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
             config.lang = SmartCALanguage.VI
             config.isFlutter = false
             VNPTSmartCA.initSDK(config)
+            VNPTSmartCA.initEkycService(EkycService(vnptSmartCA = VNPTSmartCA))
+            val x = mutableListOf<Int>()
+            x.add(Intent.FLAG_ACTIVITY_NEW_TASK)
+            VNPTSmartCA.initCustomIntentFlag(x)
+//            VNPTSmartCA.ekycService = EkycService(vnptSmartCA = VNPTSmartCA)
+        }
+
+        fun onDestroy() {
+//        super.onDestroy()
+            VNPTSmartCA.destroySDK();
         }
     }
 

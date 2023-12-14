@@ -19,6 +19,7 @@ import {
   Alert,
   NativeEventEmitter,
   NativeModules,
+  TextInput,
 } from 'react-native';
 
 import {
@@ -71,6 +72,7 @@ function App() {
   const [text, setText] = useState('');
   const [code, setCode] = useState('');
   const [visible, setVisible] = useState(false);
+  const [valueInput, onChangeText] = React.useState('');
 
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -113,7 +115,8 @@ function App() {
 
   const onPress4 = function () {
     setVisible(false);
-    CalendarModule.getWaitingTransaction('alksdfjlsdjfl');
+    console.log(valueInput);
+    CalendarModule.getWaitingTransaction(valueInput);
 
     // Alert.alert('test', 'message');
   };
@@ -178,24 +181,33 @@ function App() {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <Header />
-        <Button
+        {/* <AppBar></AppBar> */}
+        {/* <Header /> */}
+        {/* <Button
           onPress={onPress}
           title="Learn More"
           color="#841584"
           accessibilityLabel="Learn more about this purple button"
-        />
-        <Button
-          onPress={onPress2}
-          title="Get Auth"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        />
+        /> */}
+        <View style={styles.button}>
+          <Button
+            onPress={onPress2}
+            title="Get Auth"
+            color="#841584"
+            accessibilityLabel="Learn more about this purple button"
+          />
+        </View>
         <Button
           onPress={onPress3}
           title="Get Main"
           color="#841584"
           accessibilityLabel="Learn more about this purple button"
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangeText}
+          value={valueInput}
+          placeholder="Transaction ID"
         />
         <Button
           onPress={onPress4}
@@ -203,7 +215,7 @@ function App() {
           color="#841584"
           accessibilityLabel="Learn more about this purple button"
         />
-        <View
+        {/* <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
@@ -221,7 +233,7 @@ function App() {
             Read the docs to discover what to do next:
           </Section>
           <LearnMoreLinks />
-        </View>
+        </View> */}
       </ScrollView>
       <View>
         <Dialog.Container
@@ -255,6 +267,15 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
+  button: {
+    marginBottom: 12,
   },
 });
 

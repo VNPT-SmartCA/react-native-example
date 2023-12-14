@@ -25,4 +25,14 @@ class MainActivity : ReactActivity() {
   override fun createReactActivityDelegate(): ReactActivityDelegate {
     return DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
   }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    CalendarModule.init(this)
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    CalendarModule.onDestroy()
+  }
 }

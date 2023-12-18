@@ -12,4 +12,6 @@
 @interface RCT_EXTERN_REMAP_MODULE(CalendarModule, Counter, RCTEventEmitter)
 RCT_EXTERN_METHOD(increment)
 RCT_EXTERN_METHOD(getAuth)
+RCT_EXTERN_METHOD(getMainInfo)
+RCT_EXTERN_METHOD(getWaitingTransaction)
 @end

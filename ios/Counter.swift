@@ -71,6 +71,32 @@ class Counter: RCTEventEmitter {
               }
           });
   }
+  
+  @objc func  getMainInfo(){
+    self.manager?.vnptSmartCASDK?.getMainInfo(callback: { result in
+          
+      })
+  }
+  
+  @objc func getWaitingTransaction(tranId: String) {
+//      self.tranId = "xxxx"; // tạo giao dịch từ backend, lấy tranId từ hệ thống VNPT SmartCA trả về
+
+    self.manager?.vnptSmartCASDK?.getWaitingTransaction(tranId: tranId, callback: { result in
+          if result.status == SmartCAResultCode.SUCCESS_CODE {
+              print("Giao dịch thành công: \(result.status) - \(result.statusDesc) - \(result.data)");
+            
+            if self.hasListeners {
+              self.sendEvent(withName: "EventReminder", body: ["code": 0, "token": result.status, "credentialId": result.statusDesc])
+                }
+            
+            
+          } else {
+            if self.hasListeners {
+              self.sendEvent(withName: "EventReminder", body: ["code": 1, "token": result.status, "credentialId": result.statusDesc])
+                }
+          }
+      });
+  }
 
     // we need to override this method and
     // return an array of event names that we can listen to
@@ -118,21 +144,9 @@ class TestManager: NSObject {
     }
   }
   
-  func getAuth() {
-    vnptSmartCASDK?.getAuthentication(callback: { result in
-              if result.status == SmartCAResultCode.SUCCESS_CODE {
-                  // Xử lý khi thành công
-//                Counter.sharedInstance().sendEvent(withName: "EventReminder", body: ["code": 0, "token": result.data, "credentialId": ""])
-
-//                if Counter.sharedInstance().hasListeners {
-//                  Counter.sharedInstance().sendEvent(withName: "onIncrement", body: ["count": 1])
-//                    }
-                
-                
-              } else {
-                  // Xử lý khi thất bại
-              }
-          });
+  @objc
+  func destroySDK() {
+    self.vnptSmartCASDK?.destroySDK();
   }
 }
 

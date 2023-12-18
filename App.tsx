@@ -32,11 +32,11 @@ import {
 
 import Dialog from 'react-native-dialog';
 
-const {CalendarModule} = NativeModules;
+const {SmartCAModule} = NativeModules;
 
-const onPress = () => {
-  CalendarModule.createCalendarEvent('testName', 'testLocation');
-};
+// const onPress = () => {
+//   SmartCAModule.createCalendarEvent('testName', 'testLocation');
+// };
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -105,14 +105,14 @@ function App() {
     // console.log(CalendarModule);
 
     setVisible(false);
-    CalendarModule.getAuth();
+    SmartCAModule.getAuth();
 
     // Alert.alert('test', 'message');
   };
 
   const onPress3 = function () {
     setVisible(false);
-    CalendarModule.getMainInfo();
+    SmartCAModule.getMainInfo();
 
     // Alert.alert('test', 'message');
   };
@@ -120,13 +120,13 @@ function App() {
   const onPress4 = function () {
     setVisible(false);
     console.log(valueInput);
-    CalendarModule.getWaitingTransaction(valueInput);
+    SmartCAModule.getWaitingTransaction(valueInput);
 
     // Alert.alert('test', 'message');
   };
 
   useEffect(() => {
-    const eventEmitter = new NativeEventEmitter(CalendarModule);
+    const eventEmitter = new NativeEventEmitter(SmartCAModule);
     let eventListener = eventEmitter.addListener('EventReminder', event => {
       // console.log(event.eventProperty);
       let code = event.code;

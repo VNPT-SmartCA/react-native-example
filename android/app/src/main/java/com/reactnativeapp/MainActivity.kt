@@ -28,11 +28,11 @@ class MainActivity : ReactActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    CalendarModule.init(this)
+    SmartCAModule.init(this)
   }
 
   override fun onDestroy() {
     super.onDestroy()
-    CalendarModule.onDestroy()
+    SmartCAModule.onDestroy()
   }
 }

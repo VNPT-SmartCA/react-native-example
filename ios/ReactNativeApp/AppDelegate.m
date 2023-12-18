@@ -18,7 +18,7 @@
   
   
   
-  [[TestManager getInstance] initSDK];
+  [[SmartCAManager getInstance] initSDK];
   
 //  self.returnSwiftClassInstance.initSDK;
 

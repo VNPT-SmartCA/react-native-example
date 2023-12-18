@@ -1,2 +1,0 @@
-configurations.maybeCreate("default")
-artifacts.add("default", file('vnpt_smartca_sdk_lib-release.aar'))

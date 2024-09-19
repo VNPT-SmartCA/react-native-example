@@ -120,10 +120,20 @@ function App() {
   const onPress4 = function () {
     setVisible(false);
     console.log(valueInput);
-    SmartCAModule.getWaitingTransaction(valueInput);
+    SmartCAModule.getWaitingTransaction("", valueInput);
 
     // Alert.alert('test', 'message');
   };
+
+  const onPress5 = function () {
+    setVisible(false)
+    SmartCAModule.createAccount()
+  }
+
+  const onPress6 = function () {
+    setVisible(false)
+    SmartCAModule.signOut()
+  }
 
   useEffect(() => {
     const eventEmitter = new NativeEventEmitter(SmartCAModule);
@@ -198,6 +208,15 @@ function App() {
           color="#841584"
           accessibilityLabel="Learn more about this purple button"
         /> */}
+
+        <View style={styles.button}>
+          <Button
+            onPress={onPress5}
+            title="Create Account"
+            color="#841584"
+            accessibilityLabel="Learn more about this purple button"
+          />
+        </View>
         <View style={styles.button}>
           <Button
             onPress={onPress2}
@@ -218,12 +237,23 @@ function App() {
           value={valueInput}
           placeholder="Transaction ID"
         />
-        <Button
-          onPress={onPress4}
-          title="Get Waiting Transaction"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        />
+        <View style={styles.button}>
+          <Button
+            onPress={onPress4}
+            title="Get Waiting Transaction"
+            color="#841584"
+            accessibilityLabel="Learn more about this purple button"
+          />
+        </View>
+        <View style={styles.button}>
+          <Button
+            onPress={onPress6}
+            title="SignOut"
+            color="#841584"
+            accessibilityLabel="Learn more about this purple button"
+          />
+        </View>
+      
         {/* <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,

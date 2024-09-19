@@ -27,28 +27,28 @@
           "group": "io.flutter",
           "module": "flutter_embedding_release",
           "version": {
-            "requires": "1.0.0-0545f8705df301877d787107bac1a6e9fc9ee1ad"
+            "requires": "1.0.0-c4cd48e186460b32d44585ce3c103271ab676355"
           }
         },
         {
           "group": "io.flutter",
           "module": "armeabi_v7a_release",
           "version": {
-            "requires": "1.0.0-0545f8705df301877d787107bac1a6e9fc9ee1ad"
+            "requires": "1.0.0-c4cd48e186460b32d44585ce3c103271ab676355"
           }
         },
         {
           "group": "io.flutter",
           "module": "arm64_v8a_release",
           "version": {
-            "requires": "1.0.0-0545f8705df301877d787107bac1a6e9fc9ee1ad"
+            "requires": "1.0.0-c4cd48e186460b32d44585ce3c103271ab676355"
           }
         },
         {
           "group": "io.flutter",
           "module": "x86_64_release",
           "version": {
-            "requires": "1.0.0-0545f8705df301877d787107bac1a6e9fc9ee1ad"
+            "requires": "1.0.0-c4cd48e186460b32d44585ce3c103271ab676355"
           }
         },
         {
@@ -108,13 +108,6 @@
           }
         },
         {
-          "group": "io.flutter.plugins.deviceinfo",
-          "module": "device_info_release",
-          "version": {
-            "requires": "1.0"
-          }
-        },
-        {
           "group": "dev.fluttercommunity.plus.share",
           "module": "share_plus_release",
           "version": {
@@ -168,11 +161,11 @@
         {
           "name": "flutter_release-1.0.aar",
           "url": "flutter_release-1.0.aar",
-          "size": 24622273,
-          "sha512": "04e225d569d6641d3a8f81fe64ccb14ec9e3e70edac52ad9ff075ba4591ce187ac5270e3ae6bcd53ff1ff5bbd366217ff9e39a39f40f112b6e0a924618c2812e",
-          "sha256": "4fcf2c744a9a08c8c8886da48581d4238fd960e55d8bad3615e66e7dbd7a7cab",
-          "sha1": "2bc8b6c75dba19d60d3e70fdd6471315f1194011",
-          "md5": "a68ad26a5e17755a4b5c73609351f9be"
+          "size": 24768722,
+          "sha512": "4c83ad5e564de1e28d597477d597032b4493a82ccbc40eafa9ad468ecd8a2e15f2886113477381bee5b1800123de3e5c47ca51d6a542a513cd5974d5231640e7",
+          "sha256": "2785ece7022fe46147322b72b79c95a382e64127bf3c9d7ab620f2e71acd4135",
+          "sha1": "e6f257052b310b1eccdd5dc88deb4565b2b0dffa",
+          "md5": "f8ddacae360cb498d0101b8aa53d81f6"
         }
       ]
     },
@@ -189,28 +182,28 @@
           "group": "io.flutter",
           "module": "flutter_embedding_release",
           "version": {
-            "requires": "1.0.0-0545f8705df301877d787107bac1a6e9fc9ee1ad"
+            "requires": "1.0.0-c4cd48e186460b32d44585ce3c103271ab676355"
           }
         },
         {
           "group": "io.flutter",
           "module": "armeabi_v7a_release",
           "version": {
-            "requires": "1.0.0-0545f8705df301877d787107bac1a6e9fc9ee1ad"
+            "requires": "1.0.0-c4cd48e186460b32d44585ce3c103271ab676355"
           }
         },
         {
           "group": "io.flutter",
           "module": "arm64_v8a_release",
           "version": {
-            "requires": "1.0.0-0545f8705df301877d787107bac1a6e9fc9ee1ad"
+            "requires": "1.0.0-c4cd48e186460b32d44585ce3c103271ab676355"
           }
         },
         {
           "group": "io.flutter",
           "module": "x86_64_release",
           "version": {
-            "requires": "1.0.0-0545f8705df301877d787107bac1a6e9fc9ee1ad"
+            "requires": "1.0.0-c4cd48e186460b32d44585ce3c103271ab676355"
           }
         },
         {
@@ -270,13 +263,6 @@
           }
         },
         {
-          "group": "io.flutter.plugins.deviceinfo",
-          "module": "device_info_release",
-          "version": {
-            "requires": "1.0"
-          }
-        },
-        {
           "group": "dev.fluttercommunity.plus.share",
           "module": "share_plus_release",
           "version": {
@@ -330,11 +316,11 @@
         {
           "name": "flutter_release-1.0.aar",
           "url": "flutter_release-1.0.aar",
-          "size": 24622273,
-          "sha512": "04e225d569d6641d3a8f81fe64ccb14ec9e3e70edac52ad9ff075ba4591ce187ac5270e3ae6bcd53ff1ff5bbd366217ff9e39a39f40f112b6e0a924618c2812e",
-          "sha256": "4fcf2c744a9a08c8c8886da48581d4238fd960e55d8bad3615e66e7dbd7a7cab",
-          "sha1": "2bc8b6c75dba19d60d3e70fdd6471315f1194011",
-          "md5": "a68ad26a5e17755a4b5c73609351f9be"
+          "size": 24768722,
+          "sha512": "4c83ad5e564de1e28d597477d597032b4493a82ccbc40eafa9ad468ecd8a2e15f2886113477381bee5b1800123de3e5c47ca51d6a542a513cd5974d5231640e7",
+          "sha256": "2785ece7022fe46147322b72b79c95a382e64127bf3c9d7ab620f2e71acd4135",
+          "sha1": "e6f257052b310b1eccdd5dc88deb4565b2b0dffa",
+          "md5": "f8ddacae360cb498d0101b8aa53d81f6"
         }
       ]
     }

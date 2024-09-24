@@ -108,6 +108,13 @@
           }
         },
         {
+          "group": "io.flutter.plugins.deviceinfo",
+          "module": "device_info_release",
+          "version": {
+            "requires": "1.0"
+          }
+        },
+        {
           "group": "dev.fluttercommunity.plus.share",
           "module": "share_plus_release",
           "version": {
@@ -124,13 +131,6 @@
         {
           "group": "dev.fluttercommunity.plus.packageinfo",
           "module": "package_info_plus_release",
-          "version": {
-            "requires": "1.0"
-          }
-        },
-        {
-          "group": "com.crazecoder.openfile",
-          "module": "open_file_safe_release",
           "version": {
             "requires": "1.0"
           }
@@ -161,11 +161,11 @@
         {
           "name": "flutter_release-1.0.aar",
           "url": "flutter_release-1.0.aar",
-          "size": 24768722,
-          "sha512": "4c83ad5e564de1e28d597477d597032b4493a82ccbc40eafa9ad468ecd8a2e15f2886113477381bee5b1800123de3e5c47ca51d6a542a513cd5974d5231640e7",
-          "sha256": "2785ece7022fe46147322b72b79c95a382e64127bf3c9d7ab620f2e71acd4135",
-          "sha1": "e6f257052b310b1eccdd5dc88deb4565b2b0dffa",
-          "md5": "f8ddacae360cb498d0101b8aa53d81f6"
+          "size": 24825023,
+          "sha512": "efbf2799b6df66071abd8e73f0b6b4a5938c194555f0d36c47f26d942adfb0698af51db5ac31bcf40cfa7a34ef35d8281c11f7af2012807813ef7e5994066dc0",
+          "sha256": "8e8b41f8b7cbf21e0f8e28825c99d555ed863c0af0000d2afe37d5c9ced9054f",
+          "sha1": "e9c721a1a1173b2b7dfaf2b4ac0d90bb0104415c",
+          "md5": "b34f42f35930becb11bd31806cebb538"
         }
       ]
     },
@@ -263,6 +263,13 @@
           }
         },
         {
+          "group": "io.flutter.plugins.deviceinfo",
+          "module": "device_info_release",
+          "version": {
+            "requires": "1.0"
+          }
+        },
+        {
           "group": "dev.fluttercommunity.plus.share",
           "module": "share_plus_release",
           "version": {
@@ -279,13 +286,6 @@
         {
           "group": "dev.fluttercommunity.plus.packageinfo",
           "module": "package_info_plus_release",
-          "version": {
-            "requires": "1.0"
-          }
-        },
-        {
-          "group": "com.crazecoder.openfile",
-          "module": "open_file_safe_release",
           "version": {
             "requires": "1.0"
           }
@@ -316,11 +316,11 @@
         {
           "name": "flutter_release-1.0.aar",
           "url": "flutter_release-1.0.aar",
-          "size": 24768722,
-          "sha512": "4c83ad5e564de1e28d597477d597032b4493a82ccbc40eafa9ad468ecd8a2e15f2886113477381bee5b1800123de3e5c47ca51d6a542a513cd5974d5231640e7",
-          "sha256": "2785ece7022fe46147322b72b79c95a382e64127bf3c9d7ab620f2e71acd4135",
-          "sha1": "e6f257052b310b1eccdd5dc88deb4565b2b0dffa",
-          "md5": "f8ddacae360cb498d0101b8aa53d81f6"
+          "size": 24825023,
+          "sha512": "efbf2799b6df66071abd8e73f0b6b4a5938c194555f0d36c47f26d942adfb0698af51db5ac31bcf40cfa7a34ef35d8281c11f7af2012807813ef7e5994066dc0",
+          "sha256": "8e8b41f8b7cbf21e0f8e28825c99d555ed863c0af0000d2afe37d5c9ced9054f",
+          "sha1": "e9c721a1a1173b2b7dfaf2b4ac0d90bb0104415c",
+          "md5": "b34f42f35930becb11bd31806cebb538"
         }
       ]
     }

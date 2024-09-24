@@ -7,6 +7,7 @@
 
 import Foundation
 import SmartCASDK
+import FlutterPluginRegistrant
 
 @objc(SmartCAModule)
 class SmartCAModule: RCTEventEmitter {
@@ -54,7 +55,58 @@ class SmartCAModule: RCTEventEmitter {
 //
 //  }
   
+  @objc func createAccount() {
+    DispatchQueue.main.async {
+      self.manager?.vnptSmartCASDK?.createAccount(callback: { result in
+          print(result)
+      })
+    }
+    
+  
+    
+//    self.manager?.vnptSmartCASDK?.createAccount(callback: { result in
+//              if result.status == SmartCAResultCode.SUCCESS_CODE {
+//                  // Xử lý khi thành công
+////                Counter.sharedInstance().sendEvent(withName: "EventReminder", body: ["code": 0, "token": result.data, "credentialId": ""])
+//
+//                if self.hasListeners {
+//                  self.sendEvent(withName: "EventReminder", body: ["code": 0, "token": result.data, "credentialId": ""])
+//                    }
+//                
+//                
+//              } else {
+//                  // Xử lý khi thất bại
+//                if self.hasListeners {
+//                  self.sendEvent(withName: "EventReminder", body: ["code": 1, "token": result.status, "credentialId": result.statusDesc])
+//                    }
+//              }
+//          });
+  }
+  
+  @objc func signOut() {
+    
+    DispatchQueue.main.async {
+      self.manager?.vnptSmartCASDK?.signOut(callback: { result in
+                if result.status == SmartCAResultCode.SUCCESS_CODE {
+                    // Xử lý khi thành công
+  //                Counter.sharedInstance().sendEvent(withName: "EventReminder", body: ["code": 0, "token": result.data, "credentialId": ""])
+
+                  if self.hasListeners {
+                    self.sendEvent(withName: "EventReminder", body: ["code": 0, "token": "Thông báo", "credentialId": "Đăng xuất thành công"])
+                      }
+                  
+                  
+                } else {
+                    // Xử lý khi thất bại
+                }
+            });
+    }
+
+  }
+  
+  
   @objc func getAuth() {
+    DispatchQueue.main.async {
       // SDK tự động xử lý các trường hợp về token: Hết hạn, chưa kích hoạt...
     self.manager?.vnptSmartCASDK?.getAuthentication(callback: { result in
               if result.status == SmartCAResultCode.SUCCESS_CODE {
@@ -70,6 +122,7 @@ class SmartCAModule: RCTEventEmitter {
                   // Xử lý khi thất bại
               }
           });
+    }
   }
   
   @objc func  getMainInfo(){
@@ -80,11 +133,11 @@ class SmartCAModule: RCTEventEmitter {
     }
   }
   
-  @objc func getWaitingTransaction(_ tranId: String) {
+  @objc func getWaitingTransaction(_ tranId: String, _ accessToken: String) {
 //      self.tranId = "xxxx"; // tạo giao dịch từ backend, lấy tranId từ hệ thống VNPT SmartCA trả về
 
     DispatchQueue.main.async {
-      self.manager?.vnptSmartCASDK?.getWaitingTransaction(tranId: tranId, callback: { result in
+      self.manager?.vnptSmartCASDK?.getWaitingTransaction(tranId: tranId, accessToken: accessToken, callback: { result in
             if result.status == SmartCAResultCode.SUCCESS_CODE {
                 print("Giao dịch thành công: \(result.status) - \(result.statusDesc) - \(result.data)");
               
@@ -133,12 +186,25 @@ class SmartCAManager: NSObject {
   @objc
   func initSDK() {
     if let ab = RCTPresentedViewController() {
+      
+      let customParams = CustomParams(
+          customerId: "",
+          borderRadiusBtn: 99,
+          colorSecondBtn: "#DEF7EB",
+          colorPrimaryBtn: "#33CC80",
+          featuresLink: "",
+          customerPhone: "",
+          packageDefault: "",
+          logoCustom: "",
+          backgroundLogin: ""
+      )
+      let config = SDKConfig(clientId: "4185-637127995547330633.apps.signserviceapi.com", clientSecret: "NGNhMzdmOGE-OGM2Mi00MTg0", environment: ENVIRONMENT.DEMO, lang: LANG.VI, customParams: customParams);
+      
       self.vnptSmartCASDK = VNPTSmartCASDK(
         viewController: ab,
-        partnerId: "CLIENT_ID",
-        environment: VNPTSmartCASDK.ENVIRONMENT.DEMO,
-        lang: VNPTSmartCASDK.LANG.VI,
-        isFlutterApp: false)
+        config: config)
+      
+      GeneratedPluginRegistrant.register(with: self.vnptSmartCASDK?.flutterEngine as! FlutterPluginRegistry);
     }
   }
   

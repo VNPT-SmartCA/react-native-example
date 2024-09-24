@@ -159,9 +159,11 @@ function App() {
 
       setVisible(true);
 
-      // Alert.alert(code == 1 ? 'Error' : 'Success', message, [
-      //   {text: 'OK', onPress: () => console.log('OK Pressed')},
-      // ]);
+      // console.log(visible)
+
+      Alert.alert(code == 1 ? 'Error' : 'Success', message, [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
 
       // Alert.alert('test', tokenOrStatusCode);
     });
@@ -274,7 +276,7 @@ function App() {
           <LearnMoreLinks />
         </View> */}
       </ScrollView>
-      <View>
+      {/* <View>
         <Dialog.Container
           visible={visible}
           verticalButtons={true}
@@ -285,7 +287,7 @@ function App() {
           </ScrollView>
           <Dialog.Button label="OK" onPress={handleCancel} />
         </Dialog.Container>
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 }

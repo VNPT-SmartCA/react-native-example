@@ -2,7 +2,7 @@ React-Native example project use native (android/iOS) SmartCA SDK
 
 - React-Native: 0.73.0
 - Android Studio Hedgehog 2023.1.1, Java 17
-- Xcode 14.2
+- Xcode 15.2
 
 # Hướng dẫn chạy example
 

@@ -14,7 +14,7 @@
   
   BOOL value = [super application:application didFinishLaunchingWithOptions:launchOptions];
   
-  UIViewController *vc = [UIApplication sharedApplication].delegate.window.rootViewController;
+//  UIViewController *vc = [UIApplication sharedApplication].delegate.window.rootViewController;
   
   
   

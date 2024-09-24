@@ -120,10 +120,20 @@ function App() {
   const onPress4 = function () {
     setVisible(false);
     console.log(valueInput);
-    SmartCAModule.getWaitingTransaction(valueInput);
+    SmartCAModule.getWaitingTransaction("", valueInput);
 
     // Alert.alert('test', 'message');
   };
+
+  const onPress5 = function () {
+    setVisible(false)
+    SmartCAModule.createAccount()
+  }
+
+  const onPress6 = function () {
+    setVisible(false)
+    SmartCAModule.signOut()
+  }
 
   useEffect(() => {
     const eventEmitter = new NativeEventEmitter(SmartCAModule);
@@ -149,9 +159,11 @@ function App() {
 
       setVisible(true);
 
-      // Alert.alert(code == 1 ? 'Error' : 'Success', message, [
-      //   {text: 'OK', onPress: () => console.log('OK Pressed')},
-      // ]);
+      // console.log(visible)
+
+      Alert.alert(code == 1 ? 'Error' : 'Success', message, [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
 
       // Alert.alert('test', tokenOrStatusCode);
     });
@@ -198,6 +210,15 @@ function App() {
           color="#841584"
           accessibilityLabel="Learn more about this purple button"
         /> */}
+
+        <View style={styles.button}>
+          <Button
+            onPress={onPress5}
+            title="Create Account"
+            color="#841584"
+            accessibilityLabel="Learn more about this purple button"
+          />
+        </View>
         <View style={styles.button}>
           <Button
             onPress={onPress2}
@@ -218,12 +239,23 @@ function App() {
           value={valueInput}
           placeholder="Transaction ID"
         />
-        <Button
-          onPress={onPress4}
-          title="Get Waiting Transaction"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        />
+        <View style={styles.button}>
+          <Button
+            onPress={onPress4}
+            title="Get Waiting Transaction"
+            color="#841584"
+            accessibilityLabel="Learn more about this purple button"
+          />
+        </View>
+        <View style={styles.button}>
+          <Button
+            onPress={onPress6}
+            title="SignOut"
+            color="#841584"
+            accessibilityLabel="Learn more about this purple button"
+          />
+        </View>
+      
         {/* <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
@@ -244,7 +276,7 @@ function App() {
           <LearnMoreLinks />
         </View> */}
       </ScrollView>
-      <View>
+      {/* <View>
         <Dialog.Container
           visible={visible}
           verticalButtons={true}
@@ -255,7 +287,7 @@ function App() {
           </ScrollView>
           <Dialog.Button label="OK" onPress={handleCancel} />
         </Dialog.Container>
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 }

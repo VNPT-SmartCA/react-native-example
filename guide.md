@@ -1,7 +1,7 @@
 # Tích hợp React Native
 
 - Yêu cầu iOS >= 13.0
-- Yêu cầu Android: minSDKVersion = 21
+- Yêu cầu Android: minSdkVersion = 21, compileSdkVersion = 34
 
 ## Cài đặt cho Android
 
@@ -195,7 +195,7 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.android.support:exifinterface:28.0.0'
     implementation 'com.google.code.gson:gson:2.10'
-    implementation 'net.steamcrafted:load-toast:1.0.12'
+    implementation 'com.github.code-mc:loadtoast:1.0.12'
 
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.12'
@@ -264,6 +264,7 @@ import kotlinx.serialization.json.Json
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
+import com.vnpt.smartca.CustomParams
 import com.vnpt.smartca.EkycService
 
 class SmartCAModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
@@ -287,31 +288,120 @@ class SmartCAModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
+    private fun createAccount() {
+        currentActivity?.runOnUiThread {
+            try {
+                VNPTSmartCA.createAccount { result ->
+                    when (result.status) {
+                        SmartCAResultCode.SUCCESS_CODE -> {
+                            val obj: CallbackResult = Json.decodeFromString(
+                                CallbackResult.serializer(), result.data.toString()
+                            )
+                            // SDK trả lại token, credential của khách hàng
+                            // Đối tác tạo transaction cho khách hàng để lấy transId, sau đó gọi getWaitingTransaction
+                            val token = obj.accessToken
+                            val credentialId = obj.credentialId
+
+                            val params = Arguments.createMap().apply {
+                                putInt("code", 0)
+                                putString("token", token)
+                                putString("credentialId", credentialId)
+                            }
+
+                            sendEvent(this.reactApplicationContext, "EventReminder", params)
+
+//                            callback.invoke(0, token, credentialId)
+
+//                            val builder = AlertDialog.Builder(context)
+//                            builder.setTitle("Xác thực thành công")
+//                            builder.setMessage("CredentialId: $credentialId;\nAccessToken: $token")
+//                            builder.setPositiveButton(
+//                                "Close"
+//                            ) { dialog, _ -> dialog.dismiss() }
+//                            builder.show()
+                        }
+
+                        else -> {
+                            // Xử lý lỗi
+//                            val builder = AlertDialog.Builder(context)
+//                            builder.setTitle("Thông báo")
+//                            builder.setMessage("status: ${result.status}; statusDesc:  ${result.statusDesc}")
+//                            builder.setPositiveButton(
+//                                "Close"
+//                            ) { dialog, _ -> dialog.dismiss() }
+//                            builder.show()
+
+                            val params = Arguments.createMap().apply {
+                                putInt("code", 1)
+                                putString("token",  result.status.toString())
+                                putString("credentialId", result.statusDesc)
+                            }
+//
+                            sendEvent(this.reactApplicationContext, "EventReminder", params)
+//                            callback.invoke(1, result.status.toString(), result.statusDesc)
+                        }
+                    }
+                }
+            } catch (ex: Exception) {
+                throw ex;
+            }
+        }
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
     private fun getAuth() {
         currentActivity?.runOnUiThread {
             try {
                 VNPTSmartCA.getAuthentication { result ->
                     when (result.status) {
                         SmartCAResultCode.SUCCESS_CODE -> {
-                            // SDK trả lại token, credential của khách hàn
+                            val obj: CallbackResult = Json.decodeFromString(
+                                CallbackResult.serializer(), result.data.toString()
+                            )
+                            // SDK trả lại token, credential của khách hàng
+                            // Đối tác tạo transaction cho khách hàng để lấy transId, sau đó gọi getWaitingTransaction
+                            val token = obj.accessToken
+                            val credentialId = obj.credentialId
+                            val serial = obj.serial
+
                             val params = Arguments.createMap().apply {
-                                putInt("code", 0) // 0 is success
-                                putString("statusCode", result.status.toString())
-                                putString("statusDesc", result.statusDesc)
-                                putString("data", result.data.toString())
+                                putInt("code", 0)
+                                putString("token", token)
+                                putString("credentialId", credentialId)
+                                putString("serial", serial)
                             }
 
                             sendEvent(this.reactApplicationContext, "EventReminder", params)
+
+//                            callback.invoke(0, token, credentialId)
+
+//                            val builder = AlertDialog.Builder(context)
+//                            builder.setTitle("Xác thực thành công")
+//                            builder.setMessage("CredentialId: $credentialId;\nAccessToken: $token")
+//                            builder.setPositiveButton(
+//                                "Close"
+//                            ) { dialog, _ -> dialog.dismiss() }
+//                            builder.show()
                         }
 
                         else -> {
-                            val params = Arguments.createMap().apply {
-                                putInt("code", 1) // 1 is error
-                                putString("statusCode", result.status.toString())
-                                putString("statusDesc", result.statusDesc)
-                            }
-                            sendEvent(this.reactApplicationContext, "EventReminder", params)
+                            // Xử lý lỗi
+//                            val builder = AlertDialog.Builder(context)
+//                            builder.setTitle("Thông báo")
+//                            builder.setMessage("status: ${result.status}; statusDesc:  ${result.statusDesc}")
+//                            builder.setPositiveButton(
+//                                "Close"
+//                            ) { dialog, _ -> dialog.dismiss() }
+//                            builder.show()
 
+                            val params = Arguments.createMap().apply {
+                                putInt("code", 1)
+                                putString("token",  result.status.toString())
+                                putString("credentialId", result.statusDesc)
+                            }
+//
+                            sendEvent(this.reactApplicationContext, "EventReminder", params)
+//                            callback.invoke(1, result.status.toString(), result.statusDesc)
                         }
                     }
                 }
@@ -343,15 +433,28 @@ class SmartCAModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    private fun getWaitingTransaction(transId: String) {
+    private fun getWaitingTransaction(accessToken: String, transId: String) {
         currentActivity?.runOnUiThread {
             try {
-                VNPTSmartCA.getWaitingTransaction(transId) { result ->
-                            val params = Arguments.createMap().apply {
-                                putInt("code", 0) // 0 is success
-                                putString("statusCode", result.status.toString())
-                                putString("statusDesc", result.statusDesc)
-                            }
+                if (transId.isNullOrEmpty()) {
+//                editTextTrans.setError("Vui lòng điền Id giao dịch");
+//                    return
+                }
+
+                VNPTSmartCA.getWaitingTransaction(accessToken, transId) { result ->
+//                val builder = AlertDialog.Builder(this)
+//                builder.setTitle("Thông báo")
+//                builder.setMessage("status: ${result.status}; statusDesc:  ${result.statusDesc}")
+//                builder.setPositiveButton(
+//                    "Close"
+//                ) { dialog, _ -> dialog.dismiss() }
+//                builder.show()
+
+                    val params = Arguments.createMap().apply {
+                        putInt("code", 0)
+                        putString("token", result.status.toString())
+                        putString("credentialId", result.statusDesc)
+                    }
 
                     sendEvent(this.reactApplicationContext, "EventReminder", params)
 
@@ -372,6 +475,40 @@ class SmartCAModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
         }
     }
 
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    private fun signOut() {
+        currentActivity?.runOnUiThread {
+            try {
+                VNPTSmartCA.signOut { result ->
+                    when (result.status) {
+                        SmartCAResultCode.SUCCESS_CODE -> {
+                            val params = Arguments.createMap().apply {
+                                putInt("code", 0)
+                                putString("token", "Thông báo")
+                                putString("credentialId", "Đăng xuất thành công")
+                            }
+
+                            sendEvent(this.reactApplicationContext, "EventReminder", params)
+                        }
+
+                        else -> {
+                            val params = Arguments.createMap().apply {
+                                putInt("code", 1)
+                                putString("token",  result.status.toString())
+                                putString("credentialId", result.statusDesc)
+                            }
+//
+                            sendEvent(this.reactApplicationContext, "EventReminder", params)
+//                            callback.invoke(1, result.status.toString(), result.statusDesc)
+                        }
+                    }
+                }
+            } catch (ex: Exception) {
+                throw ex;
+            }
+        }
+    }
+
 
     companion object {
 
@@ -382,25 +519,55 @@ class SmartCAModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
 
         fun init(context: Context) {
             this.context = context
-            val config = ConfigSDK()
-            config.context = context
-            config.partnerId = "<YOUR PARTNER ID>"
-            config.environment = SmartCAEnvironment.DEMO_ENV
-            config.lang = SmartCALanguage.VI
-            config.isFlutter = false
-            VNPTSmartCA.initSDK(config)
+
+            var customParams = CustomParams(
+                customerId = "", // Số CCCD, giấy tờ của KH
+                customerPhone = "", // Số ĐT của KH
+                borderRadiusBtn = 99.0, // Border của nút
+                colorSecondBtn = "#DEF7EB", // Màu nền nút phụ
+                colorPrimaryBtn = "#33CC80", // Màu nền nút chính
+                logoCustom = "", // base64 ảnh logo dạng 			"iVBORw0KGgoAAAANSUhEUgAAANgAAA......"
+                backgroundLogin = "", // base64 ảnh nền login dạng 			"iVBORw0KGgoAAAANSUhEUgAAANgAAA......",
+                packageDefault = "PS0", // Chỉ hiển thị gói cước PS0
+            )
+
+            val config = ConfigSDK(
+                env = SmartCAEnvironment.DEMO_ENV, // Môi trường kết nối DEMO/PROD
+                clientId = "4185-637127995547330633.apps.signserviceapi.com", // clientId tương ứng với môi trường được cấp qua email
+                clientSecret = "NGNhMzdmOGE-OGM2Mi00MTg0", // clientSecret tương ứng với môi trường được cấp qua email
+                lang = SmartCALanguage.VI,
+                isFlutter = false,
+                customParams = customParams,
+            )
+
+
+//            config.context = context
+//            config.partnerId = "VNPTSmartCAPartner-add1fb94-9629-49`47-b7d8-f2671b04c747"
+//            config.environment = SmartCAEnvironment.DEMO_ENV
+//            config.lang = SmartCALanguage.VI
+//            config.isFlutter = false
+            VNPTSmartCA.initSDK(context, config)
             VNPTSmartCA.initEkycService(EkycService(vnptSmartCA = VNPTSmartCA))
             val x = mutableListOf<Int>()
             x.add(Intent.FLAG_ACTIVITY_NEW_TASK)
             VNPTSmartCA.initCustomIntentFlag(x)
+//            VNPTSmartCA.ekycService = EkycService(vnptSmartCA = VNPTSmartCA)
         }
 
         fun onDestroy() {
+//        super.onDestroy()
             VNPTSmartCA.destroySDK();
         }
     }
 
 }
+
+@Serializable
+data class CallbackResult(
+    val credentialId: String,
+    val accessToken: String,
+    val serial: String,
+) : java.io.Serializable
 ```
 
 - Tạo file `MyAppPackage.kt` ngang hàng với `MainApplication.kt`
@@ -472,68 +639,128 @@ override fun onDestroy() {
 
 import Foundation
 import SmartCASDK
+import FlutterPluginRegistrant
 
 @objc(SmartCAModule)
 class SmartCAModule: RCTEventEmitter {
-
+  
   private var manager: SmartCAManager?
   private var hasListeners = false
-
+  
   override init() {
       super.init()
       self.manager = SmartCAManager.shared
   }
-
+  
+  private var count = 0
+  
+//  private var hasListeners = false
+//
+//  var vnptSmartCASDK: VNPTSmartCASDK?
+  
+  
   override func startObserving() {
     hasListeners = true
   }
-
+  
   override func stopObserving() {
     hasListeners = false
   }
+  
+  @objc
+    func increment() {
+      count += 1
+      print("count is \(count)")
+      sendEvent(withName: "onIncrement", body: ["count": count])
+    }
+  
+//    @objc
+//  func initSDK(vc: UIViewController) {
+//    if let ab = RCTPresentedViewController() {
+//      self.vnptSmartCASDK = VNPTSmartCASDK(
+//        viewController: ab,
+//        partnerId: "CLIENT_ID",
+//        environment: VNPTSmartCASDK.ENVIRONMENT.DEMO,
+//        lang: VNPTSmartCASDK.LANG.VI,
+//        isFlutterApp: false)
+//    }
+//
+//  }
+  
+  @objc func createAccount() {
+    DispatchQueue.main.async {
+      self.manager?.vnptSmartCASDK?.createAccount(callback: { result in
+          print(result)
+      })
+    }
+  }
+  
+  @objc func signOut() {
+    
+    DispatchQueue.main.async {
+      self.manager?.vnptSmartCASDK?.signOut(callback: { result in
+                if result.status == SmartCAResultCode.SUCCESS_CODE {
+                    // Xử lý khi thành công
+  //                Counter.sharedInstance().sendEvent(withName: "EventReminder", body: ["code": 0, "token": result.data, "credentialId": ""])
 
+                  if self.hasListeners {
+                    self.sendEvent(withName: "EventReminder", body: ["code": 0, "token": "Thông báo", "credentialId": "Đăng xuất thành công"])
+                      }
+                  
+                  
+                } else {
+                    // Xử lý khi thất bại
+                }
+            });
+    }
+
+  }
+  
+  
   @objc func getAuth() {
+    DispatchQueue.main.async {
       // SDK tự động xử lý các trường hợp về token: Hết hạn, chưa kích hoạt...
     self.manager?.vnptSmartCASDK?.getAuthentication(callback: { result in
               if result.status == SmartCAResultCode.SUCCESS_CODE {
                   // Xử lý khi thành công
-                if self.hasListeners {
-                  self.sendEvent(withName: "EventReminder", body: ["code": 0, "statusCode": result.status, "statusDesc": result.statusDesc, "data": result.data])
-                    }
+//                Counter.sharedInstance().sendEvent(withName: "EventReminder", body: ["code": 0, "token": result.data, "credentialId": ""])
 
+                if self.hasListeners {
+                  self.sendEvent(withName: "EventReminder", body: ["code": 0, "token": result.data, "credentialId": ""])
+                    }
+                
+                
               } else {
                   // Xử lý khi thất bại
-                  if self.hasListeners {
-                  self.sendEvent(withName: "EventReminder", body: ["code": 1, "statusCode": result.status, "statusDesc": result.statusDesc])
-                    }
               }
           });
+    }
   }
-
+  
   @objc func  getMainInfo(){
     DispatchQueue.main.async {
       self.manager?.vnptSmartCASDK?.getMainInfo(callback: { result in
-
+        
       })
     }
   }
-
-  @objc func getWaitingTransaction(_ tranId: String) {
+  
+  @objc func getWaitingTransaction(_ tranId: String, _ accessToken: String) {
 //      self.tranId = "xxxx"; // tạo giao dịch từ backend, lấy tranId từ hệ thống VNPT SmartCA trả về
 
     DispatchQueue.main.async {
-      self.manager?.vnptSmartCASDK?.getWaitingTransaction(tranId: tranId, callback: { result in
+      self.manager?.vnptSmartCASDK?.getWaitingTransaction(tranId: tranId, accessToken: accessToken, callback: { result in
             if result.status == SmartCAResultCode.SUCCESS_CODE {
                 print("Giao dịch thành công: \(result.status) - \(result.statusDesc) - \(result.data)");
-
+              
               if self.hasListeners {
-                self.sendEvent(withName: "EventReminder", body: ["code": 0, "statusCode": result.status, "statusDesc": result.statusDesc])
+                self.sendEvent(withName: "EventReminder", body: ["code": 0, "token": result.status, "credentialId": result.statusDesc])
                   }
-
-
+              
+              
             } else {
               if self.hasListeners {
-                self.sendEvent(withName: "EventReminder", body: ["code": 1, "statusCode": result.status, "statusDesc": result.statusDesc])
+                self.sendEvent(withName: "EventReminder", body: ["code": 1, "token": result.status, "credentialId": result.statusDesc])
                   }
             }
         });
@@ -543,48 +770,62 @@ class SmartCAModule: RCTEventEmitter {
     // we need to override this method and
     // return an array of event names that we can listen to
     override func supportedEvents() -> [String]! {
-      return ["EventReminder"]
+      return ["onIncrement", "EventReminder"]
     }
-
+  
 
   @objc
   override func constantsToExport() -> [AnyHashable : Any]! {
       return ["initialCount": 0]
   }
-
+  
   override static func requiresMainQueueSetup() -> Bool {
     return true
   }
-
-
+  
+  
 }
 
 class SmartCAManager: NSObject {
   static let shared = SmartCAManager()
-
+  
   @objc class func getInstance() -> SmartCAManager {
     return SmartCAManager.shared
   }
-
+  
   var vnptSmartCASDK: VNPTSmartCASDK?
-
+  
   @objc
   func initSDK() {
     if let ab = RCTPresentedViewController() {
+      
+      let customParams = CustomParams(
+          customerId: "",
+          borderRadiusBtn: 99,
+          colorSecondBtn: "#DEF7EB",
+          colorPrimaryBtn: "#33CC80",
+          featuresLink: "",
+          customerPhone: "",
+          packageDefault: "",
+          logoCustom: "",
+          backgroundLogin: ""
+      )
+      let config = SDKConfig(clientId: "4185-637127995547330633.apps.signserviceapi.com", clientSecret: "NGNhMzdmOGE-OGM2Mi00MTg0", environment: ENVIRONMENT.DEMO, lang: LANG.VI, customParams: customParams);
+      
       self.vnptSmartCASDK = VNPTSmartCASDK(
         viewController: ab,
-        partnerId: "CLIENT_ID",
-        environment: VNPTSmartCASDK.ENVIRONMENT.DEMO,
-        lang: VNPTSmartCASDK.LANG.VI,
-        isFlutterApp: false)
+        config: config)
+      
+      GeneratedPluginRegistrant.register(with: self.vnptSmartCASDK?.flutterEngine as! FlutterPluginRegistry);
     }
   }
-
+  
   @objc
   func destroySDK() {
     self.vnptSmartCASDK?.destroySDK();
   }
 }
+
 ```
 
 - Cấu hình file `*-Bridging-Header.h`
@@ -609,9 +850,12 @@ class SmartCAManager: NSObject {
 #import "React/RCTEventEmitter.h"
 
 @interface RCT_EXTERN_MODULE(SmartCAModule, RCTEventEmitter)
+RCT_EXTERN_METHOD(increment)
+RCT_EXTERN_METHOD(createAccount)
 RCT_EXTERN_METHOD(getAuth)
 RCT_EXTERN_METHOD(getMainInfo)
-RCT_EXTERN_METHOD(getWaitingTransaction: String)
+RCT_EXTERN_METHOD(getWaitingTransaction: String: String)
+RCT_EXTERN_METHOD(signOut)
 @end
 ```
 
@@ -659,13 +903,21 @@ useEffect(() => {
 - Sử dụng các hàm chính
 
 ```js
+// create account
+SmartCAModule.createAccount()
+
 // get auth
-SmartCAModule.getAuth();
+SmartCAModule.getAuth()
 
 // get main info
-SmartCAModule.getMainInfo();
+SmartCAModule.getMainInfo()
 
 // get waiting transaction
-let transactionId = 'xxx';
-SmartCAModule.getWaitingTransaction(transactionId);
+// Lấy accessToken từ `SmartCAModule.getAuth()`
+
+let transactionId = 'xxx'
+SmartCAModule.getWaitingTransaction(accessToken, transactionId)
+
+// sign out
+SmartCAModule.signOut()
 ```

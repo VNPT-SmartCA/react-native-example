@@ -187,7 +187,7 @@ class SmartCAModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    private fun getWaitingTransaction(accessToken: String, transId: String) {
+    private fun getWaitingTransaction(transId: String) {
         currentActivity?.runOnUiThread {
             try {
                 if (transId.isNullOrEmpty()) {
@@ -195,7 +195,7 @@ class SmartCAModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
 //                    return
                 }
 
-                VNPTSmartCA.getWaitingTransaction(accessToken, transId) { result ->
+                VNPTSmartCA.getWaitingTransaction(transId) { result ->
 //                val builder = AlertDialog.Builder(this)
 //                builder.setTitle("Thông báo")
 //                builder.setMessage("status: ${result.status}; statusDesc:  ${result.statusDesc}")
@@ -283,6 +283,7 @@ class SmartCAModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
                 logoCustom = "", // base64 ảnh logo dạng 			"iVBORw0KGgoAAAANSUhEUgAAANgAAA......"
                 backgroundLogin = "", // base64 ảnh nền login dạng 			"iVBORw0KGgoAAAANSUhEUgAAANgAAA......",
 //                packageDefault = "PS0", // Chỉ hiển thị gói cước PS0
+//                password = ""
             )
 
             val config = ConfigSDK(

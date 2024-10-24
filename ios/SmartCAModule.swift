@@ -199,7 +199,7 @@ class SmartCAManager: NSObject {
           logoCustom: "",
           backgroundLogin: ""
       )
-      let config = SDKConfig(clientId: "4185-637127995547330633.apps.signserviceapi.com", clientSecret: "NGNhMzdmOGE-OGM2Mi00MTg0", environment: ENVIRONMENT.DEMO, lang: LANG.VI, customParams: customParams);
+      let config = SDKConfig(clientId: "", clientSecret: "", environment: ENVIRONMENT.DEMO, lang: LANG.VI, customParams: customParams);
       
       self.vnptSmartCASDK = VNPTSmartCASDK(
         viewController: ab,

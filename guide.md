@@ -533,8 +533,8 @@ class SmartCAModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
 
             val config = ConfigSDK(
                 env = SmartCAEnvironment.DEMO_ENV, // Môi trường kết nối DEMO/PROD
-                clientId = "4185-637127995547330633.apps.signserviceapi.com", // clientId tương ứng với môi trường được cấp qua email
-                clientSecret = "NGNhMzdmOGE-OGM2Mi00MTg0", // clientSecret tương ứng với môi trường được cấp qua email
+                clientId = "", // clientId tương ứng với môi trường được cấp qua email
+                clientSecret = "", // clientSecret tương ứng với môi trường được cấp qua email
                 lang = SmartCALanguage.VI,
                 isFlutter = false,
                 customParams = customParams,
@@ -745,11 +745,11 @@ class SmartCAModule: RCTEventEmitter {
     }
   }
   
-  @objc func getWaitingTransaction(_ tranId: String, _ accessToken: String) {
+  @objc func getWaitingTransaction(_ tranId: String) {
 //      self.tranId = "xxxx"; // tạo giao dịch từ backend, lấy tranId từ hệ thống VNPT SmartCA trả về
 
     DispatchQueue.main.async {
-      self.manager?.vnptSmartCASDK?.getWaitingTransaction(tranId: tranId, accessToken: accessToken, callback: { result in
+      self.manager?.vnptSmartCASDK?.getWaitingTransaction(tranId: tranId, callback: { result in
             if result.status == SmartCAResultCode.SUCCESS_CODE {
                 print("Giao dịch thành công: \(result.status) - \(result.statusDesc) - \(result.data)");
               
@@ -807,6 +807,7 @@ class SmartCAManager: NSObject {
           featuresLink: "",
           customerPhone: "",
           packageDefault: "",
+	  password: "",
           logoCustom: "",
           backgroundLogin: ""
       )
@@ -854,7 +855,7 @@ RCT_EXTERN_METHOD(increment)
 RCT_EXTERN_METHOD(createAccount)
 RCT_EXTERN_METHOD(getAuth)
 RCT_EXTERN_METHOD(getMainInfo)
-RCT_EXTERN_METHOD(getWaitingTransaction: String: String)
+RCT_EXTERN_METHOD(getWaitingTransaction: String)
 RCT_EXTERN_METHOD(signOut)
 @end
 ```
@@ -916,7 +917,7 @@ SmartCAModule.getMainInfo()
 // Lấy accessToken từ `SmartCAModule.getAuth()`
 
 let transactionId = 'xxx'
-SmartCAModule.getWaitingTransaction(accessToken, transactionId)
+SmartCAModule.getWaitingTransaction(transactionId)
 
 // sign out
 SmartCAModule.signOut()

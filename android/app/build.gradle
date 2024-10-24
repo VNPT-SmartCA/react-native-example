@@ -114,9 +114,6 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
-//        profile {
-//            initWith debug
-//        }
     }
 
     packagingOptions {
@@ -124,33 +121,16 @@ android {
         pickFirst 'lib/x86_64/libc++_shared.so'
         pickFirst 'lib/armeabi-v7a/libc++_shared.so'
         pickFirst 'lib/arm64-v8a/libc++_shared.so'
-
-//        exclude 'lib/armeabi-v7a/libc++_shared.so'
-//        exclude 'lib/x86/libc++_shared.so'
-//        exclude 'lib/x86_64/libc++_shared.so'
-//        exclude 'lib/arm64-v8a/libc++_shared.so'
-
     }
-//
-//    compileOptions {
-//      sourceCompatibility JavaVersion.VERSION_17
-//      targetCompatibility JavaVersion.VERSION_17
-//    }
-//    kotlinOptions {
-//        jvmTarget = '17'
-//    }
+
     aaptOptions {
         noCompress "bic"
     }
-//    sourceSets {
-//        main.java.srcDirs += 'src/main/kotlin'
-//    }
+
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.aar"])
-//    implementation filetree(dir: "libs", include: ["*.aar"])
-//    implementation 'com.facebook.react:react-native:+'
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
@@ -178,16 +158,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation 'androidx.test.espresso:espresso-idling-resource:3.5.1'
 
-//    implementation project(':flutter')
-//    implementation project(path: ':smartca', configuration:'default')
-//    implementation project(path: ':econtract', configuration:'default')
-//    implementation project(path: ':ekyc', configuration:'default')
     implementation files('libs/vnpt_smartca_sdk_lib-release-v1.0.aar')
     implementation files('libs/ekyc_sdk-release-v3.2.7.aar')
 	implementation files('libs/load-toast.aar')
-////    implementation files('libs/flutter_release-1.0.aar')
-//
-    implementation files('libs/eContract-v3.1.0.aar')
+
+    implementation files('libs/eContract-v3.6.12.aar')
     implementation 'com.squareup.okhttp3:okhttp:4.7.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.6.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

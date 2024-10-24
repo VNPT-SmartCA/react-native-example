@@ -120,7 +120,7 @@ function App() {
   const onPress4 = function () {
     setVisible(false);
     console.log(valueInput);
-    SmartCAModule.getWaitingTransaction("", valueInput);
+    SmartCAModule.getWaitingTransaction(valueInput);
 
     // Alert.alert('test', 'message');
   };

@@ -133,11 +133,11 @@ class SmartCAModule: RCTEventEmitter {
     }
   }
   
-  @objc func getWaitingTransaction(_ tranId: String, _ accessToken: String) {
+  @objc func getWaitingTransaction(_ tranId: String) {
 //      self.tranId = "xxxx"; // tạo giao dịch từ backend, lấy tranId từ hệ thống VNPT SmartCA trả về
 
     DispatchQueue.main.async {
-      self.manager?.vnptSmartCASDK?.getWaitingTransaction(tranId: tranId, accessToken: accessToken, callback: { result in
+      self.manager?.vnptSmartCASDK?.getWaitingTransaction(tranId: tranId, callback: { result in
             if result.status == SmartCAResultCode.SUCCESS_CODE {
                 print("Giao dịch thành công: \(result.status) - \(result.statusDesc) - \(result.data)");
               
@@ -195,6 +195,7 @@ class SmartCAManager: NSObject {
           featuresLink: "",
           customerPhone: "",
           packageDefault: "",
+          password: "",
           logoCustom: "",
           backgroundLogin: ""
       )

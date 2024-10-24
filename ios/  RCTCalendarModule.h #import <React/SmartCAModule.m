@@ -15,6 +15,7 @@ RCT_EXTERN_METHOD(increment)
 RCT_EXTERN_METHOD(createAccount)
 RCT_EXTERN_METHOD(getAuth)
 RCT_EXTERN_METHOD(getMainInfo)
-RCT_EXTERN_METHOD(getWaitingTransaction: String: String)
+//RCT_EXTERN_METHOD(getWaitingTransaction: String: String)
+RCT_EXTERN_METHOD(getWaitingTransaction: String)
 RCT_EXTERN_METHOD(signOut)
 @end
